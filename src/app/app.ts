@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { HeroBanner } from './components/hero-banner/hero-banner';
+import { GiftsSection } from './gifts-section/gifts-section';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [RouterOutlet, HeroBanner, GiftsSection],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
