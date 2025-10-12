@@ -11,23 +11,13 @@
 
   <div class="spotify-controls">
     <button id="spotify-login" class="btn">Iniciar sesión con Spotify</button>
+    <div id="spotify-user" style="display:inline-block;margin-left:12px;color:#333"></div>
     <div class="spotify-search">
-      <input id="spotify-search" type="text" placeholder="Buscar canción o artista">
-      <button id="spotify-search-btn" class="btn">Buscar</button>
-    </div>
-    <div style="margin-top:8px">
-      <button id="spotify-token-set" class="btn">Pegar token de prueba</button>
-      <small style="display:block">(Pega un access_token para pruebas locales)</small>
+      <input id="spotify-autocomplete" type="text" placeholder="Buscar canción o artista" autocomplete="off">
+      <div id="spotify-autocomplete-results" class="autocomplete-results" role="listbox"></div>
+      <div id="spotify-selected" style="margin-top:8px;">
+        <span id="spotify-selected-name"></span>
+        <button id="spotify-add-selected" class="btn" style="margin-left:8px;" disabled>Agregar a playlist</button>
+      </div>
     </div>
   </div>
-
-  <div id="spotify-results" class="spotify-results"></div>
-
-  <p>O pegá la URL/URI de la pista aquí:</p>
-  <form onsubmit="return false;" id="song-suggest-form">
-    <input id="suggest-name" type="text" placeholder="Nombre">
-    <input id="suggest-input" type="text" placeholder="Sugerir aquí (URL o URI)" required>
-    <button id="suggest-submit" type="button" class="btn">Enviar</button>
-  </form>
-  <p class="feedback" id="suggest-feedback" hidden></p>
-</div>

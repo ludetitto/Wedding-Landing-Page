@@ -16,6 +16,46 @@ export class SongSuggestionsComponent implements OnInit {
   spotify = new SpotifyService();
 
   ngOnInit(): void {
+    // On load, check if we have a token and get user info
+    const userEl = document.getElementById('spotify-user') as HTMLElement | null;
+    const feedbackEl = document.getElementById('suggest-feedback') as HTMLElement | null;
+
+    const fetchMeAndUpdate = async (token: string | null) => {
+      if (!token) {
+        if (userEl) {
+          userEl.textContent = '(no autenticado)';
+          userEl.className = '';
+        }
+        if (feedbackEl) { feedbackEl.textContent = 'Para buscar y agregar canciones necesitás iniciar sesión con Spotify.'; feedbackEl.hidden = false; }
+        setAuthenticatedUI(false);
+        return false;
+      }
+      try {
+        const res = await fetch('https://api.spotify.com/v1/me', { headers: { Authorization: `Bearer ${token}` } });
+        if (!res.ok) {
+          if (feedbackEl) { feedbackEl.textContent = 'Token inválido o expirado. Pega un token nuevo o reiniciá login.'; feedbackEl.hidden = false; }
+          if (userEl) { userEl.textContent = '(token inválido)'; userEl.className = ''; }
+          setAuthenticatedUI(false);
+          return false;
+        }
+        const me = await res.json();
+        if (userEl) { userEl.textContent = `${me.display_name || me.id}`; userEl.className = 'spotify-badge'; }
+        if (feedbackEl) { feedbackEl.hidden = true; }
+        setAuthenticatedUI(true);
+        return true;
+      } catch (e) {
+        if (feedbackEl) { feedbackEl.textContent = 'Error al verificar usuario.'; feedbackEl.hidden = false; }
+        if (userEl) { userEl.textContent = '(error)'; userEl.className = ''; }
+        setAuthenticatedUI(false);
+        return false;
+      }
+    };
+
+    // run initial check
+    (async () => {
+      const token = this.spotify.getAccessToken();
+      await fetchMeAndUpdate(token);
+    })();
     // Attach handlers to plain DOM elements to avoid requiring FormsModule
     const submitBtn = document.getElementById('suggest-submit');
     const form = document.getElementById('song-suggest-form');
@@ -78,48 +118,161 @@ export class SongSuggestionsComponent implements OnInit {
       });
     }
 
-    // Login button
+    // Login button and toggleable UI
     const loginBtn = document.getElementById('spotify-login');
+    const searchContainer = document.querySelector('.spotify-search') as HTMLElement | null;
+    const selectedContainer = document.getElementById('spotify-selected') as HTMLElement | null;
+
+    const setAuthenticatedUI = (authed: boolean) => {
+      // when not authenticated show only the login button
+      if (loginBtn) loginBtn.style.display = authed ? 'none' : '';
+      if (searchContainer) searchContainer.style.display = authed ? '' : 'none';
+      if (selectedContainer) selectedContainer.style.display = authed ? '' : 'none';
+    };
+
+    // initialize UI based on current token
+    const initialToken = this.spotify.getAccessToken();
+    setAuthenticatedUI(!!initialToken);
+
     if (loginBtn) {
       loginBtn.addEventListener('click', () => this.spotify.startLogin());
     }
 
     // Search
-    const searchBtn = document.getElementById('spotify-search-btn');
-    if (searchBtn) {
-      searchBtn.addEventListener('click', async () => {
-        const qEl = document.getElementById('spotify-search') as HTMLInputElement | null;
-        const resultsEl = document.getElementById('spotify-results') as HTMLElement | null;
-        const feedbackEl = document.getElementById('suggest-feedback') as HTMLElement | null;
-        const q = qEl?.value || '';
-        if (!q) return;
-        try {
-          const data = await this.spotify.searchTracks(q, 10);
-          const tracks = data.tracks.items || [];
-          if (resultsEl) {
-            resultsEl.innerHTML = tracks.map((t: any) => `
-              <div class="track-item">
-                <img src="${t.album.images[2]?.url || ''}" alt="" />
-                <div class="info">${t.name} — ${t.artists.map((a: any) => a.name).join(', ')}</div>
-                <button data-uri="${t.uri}" class="add-track">Agregar</button>
-              </div>
-            `).join('');
+    const autocompleteInput = document.getElementById('spotify-autocomplete') as HTMLInputElement | null;
+    const autocompleteResults = document.getElementById('spotify-autocomplete-results') as HTMLElement | null;
+    const selectedNameEl = document.getElementById('spotify-selected-name') as HTMLElement | null;
+    const addSelectedBtn = document.getElementById('spotify-add-selected') as HTMLButtonElement | null;
+    let debounceTimer: any = null;
+    let currentTracks: any[] = [];
+    let selectedTrackUri: string | null = null;
+    let selectedIndex: number = -1; // for keyboard navigation
 
-            // attach add handlers
-            resultsEl.querySelectorAll('.add-track').forEach((btn: Element) => {
-              btn.addEventListener('click', async (ev) => {
-                const uri = (btn as HTMLElement).getAttribute('data-uri') || '';
-                try {
-                  await this.spotify.addTracksToPlaylist(this.playlistId, [uri]);
-                  if (feedbackEl) { feedbackEl.textContent = '¡Canción agregada!'; feedbackEl.hidden = false; }
-                } catch (err: any) {
-                  if (feedbackEl) { feedbackEl.textContent = `Error: ${err.error?.message || err.message || err}`; feedbackEl.hidden = false; }
-                }
+    const highlightSelected = () => {
+      if (!autocompleteResults) return;
+      const items = Array.from(autocompleteResults.querySelectorAll('.ac-item')) as HTMLElement[];
+      items.forEach((it, i) => {
+        if (i === selectedIndex) it.classList.add('ac-selected'); else it.classList.remove('ac-selected');
+      });
+      // ensure highlighted item is visible
+      if (selectedIndex >= 0 && items[selectedIndex]) {
+        try { items[selectedIndex].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) { /* ignore in old browsers */ }
+      }
+      const track = currentTracks[selectedIndex];
+      if (track) {
+        selectedTrackUri = track.uri;
+        if (selectedNameEl) selectedNameEl.textContent = `${track.name} — ${track.artists.map((a:any)=>a.name).join(', ')}`;
+        if (addSelectedBtn) addSelectedBtn.disabled = false;
+      } else {
+        selectedTrackUri = null;
+        if (selectedNameEl) selectedNameEl.textContent = '';
+        if (addSelectedBtn) addSelectedBtn.disabled = true;
+      }
+    };
+
+    const clearResults = () => {
+      if (autocompleteResults) autocompleteResults.innerHTML = '';
+      currentTracks = [];
+      selectedTrackUri = null;
+      if (selectedNameEl) selectedNameEl.textContent = '';
+      if (addSelectedBtn) addSelectedBtn.disabled = true;
+    };
+
+    if (autocompleteInput) {
+      autocompleteInput.addEventListener('input', () => {
+        const q = autocompleteInput.value.trim();
+        if (debounceTimer) clearTimeout(debounceTimer);
+        if (!q) { clearResults(); return; }
+        debounceTimer = setTimeout(async () => {
+          try {
+            const data = await this.spotify.searchTracks(q, 8);
+            const tracks = data.tracks.items || [];
+            currentTracks = tracks;
+            if (autocompleteResults) {
+              // reset any previous keyboard selection
+              selectedIndex = -1;
+              autocompleteResults.innerHTML = tracks.map((t: any, idx: number) => {
+                const thumb = t.album?.images && (t.album.images[1]?.url || t.album.images[2]?.url || '');
+                const artists = t.artists.map((a:any)=>a.name).join(', ');
+                return `
+                  <div class="ac-item" data-idx="${idx}" role="option">
+                    <img src="${thumb}" alt="Album art" class="ac-thumb" />
+                    <div class="ac-meta">
+                      <div class="ac-title">${t.name}</div>
+                      <div class="ac-sub">${artists}</div>
+                    </div>
+                  </div>
+                `;
+              }).join('');
+
+              // attach handlers
+              autocompleteResults.querySelectorAll('.ac-item').forEach((el: Element) => {
+                el.addEventListener('click', () => {
+                  const idx = parseInt((el as HTMLElement).getAttribute('data-idx') || '0', 10);
+                  const track = currentTracks[idx];
+                  if (!track) return;
+                  selectedTrackUri = track.uri;
+                  if (selectedNameEl) selectedNameEl.textContent = `${track.name} — ${track.artists.map((a:any)=>a.name).join(', ')}`;
+                  if (addSelectedBtn) addSelectedBtn.disabled = false;
+                });
+                el.addEventListener('mouseover', () => {
+                  const idx = parseInt((el as HTMLElement).getAttribute('data-idx') || '0', 10);
+                  selectedIndex = idx;
+                  highlightSelected();
+                });
               });
-            });
+            }
+          } catch (e: any) {
+            const feedbackEl = document.getElementById('suggest-feedback') as HTMLElement | null;
+            if (feedbackEl) { feedbackEl.textContent = `Error de búsqueda: ${e.message || e}`; feedbackEl.hidden = false; }
           }
-        } catch (e: any) {
-          if (feedbackEl) { feedbackEl.textContent = `Error de búsqueda: ${e.message || e}`; feedbackEl.hidden = false; }
+        }, 300);
+      });
+
+      // keyboard navigation: ArrowUp, ArrowDown, Enter, Escape
+      autocompleteInput.addEventListener('keydown', (ev: KeyboardEvent) => {
+        if (!autocompleteResults) return;
+        const maxIndex = Math.max(0, currentTracks.length - 1);
+        if (ev.key === 'ArrowDown') {
+          ev.preventDefault();
+          selectedIndex = Math.min(maxIndex, selectedIndex + 1);
+          highlightSelected();
+        } else if (ev.key === 'ArrowUp') {
+          ev.preventDefault();
+          selectedIndex = Math.max(-1, selectedIndex - 1);
+          highlightSelected();
+        } else if (ev.key === 'Enter') {
+          ev.preventDefault();
+          if (selectedIndex >= 0 && currentTracks[selectedIndex]) {
+            const track = currentTracks[selectedIndex];
+            selectedTrackUri = track.uri;
+            if (selectedNameEl) selectedNameEl.textContent = `${track.name} — ${track.artists.map((a:any)=>a.name).join(', ')}`;
+            if (addSelectedBtn) addSelectedBtn.disabled = false;
+            // optionally clear input
+            // autocompleteInput.value = '';
+          }
+        } else if (ev.key === 'Escape') {
+          ev.preventDefault();
+          clearResults();
+        }
+      });
+    }
+
+    if (addSelectedBtn) {
+      addSelectedBtn.addEventListener('click', async () => {
+        const feedbackEl = document.getElementById('suggest-feedback') as HTMLElement | null;
+        if (!selectedTrackUri) {
+          if (feedbackEl) { feedbackEl.textContent = 'Seleccioná una pista primero.'; feedbackEl.hidden = false; }
+          return;
+        }
+        try {
+          await this.spotify.addTracksToPlaylist(this.playlistId, [selectedTrackUri]);
+          if (feedbackEl) { feedbackEl.textContent = '¡Canción agregada a la playlist!'; feedbackEl.hidden = false; }
+          // reset selection
+          if (autocompleteInput) autocompleteInput.value = '';
+          clearResults();
+        } catch (err: any) {
+          if (feedbackEl) { feedbackEl.textContent = `Error al agregar: ${err.error?.message || err.message || err}`; feedbackEl.hidden = false; }
         }
       });
     }
@@ -133,6 +286,8 @@ export class SongSuggestionsComponent implements OnInit {
           const existing = { access_token: token };
           localStorage.setItem('spotify_token', JSON.stringify(existing));
           alert('Token guardado en localStorage bajo "spotify_token". Puedes usar búsqueda/Agregar ahora.');
+          // update UI to authenticated state
+          setAuthenticatedUI(true);
         }
       });
     }

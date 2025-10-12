@@ -27,3 +27,46 @@ input {
   font-size: 1rem;
   cursor: pointer;
 }
+
+.autocomplete-results {
+  text-align: left;
+  max-height: 220px;
+  overflow: auto;
+  margin-top: 0.5rem;
+  border: 1px solid #eee;
+  background: #fff;
+  width: 80%;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 6px;
+}
+.ac-item {
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.5rem;
+  align-items: center;
+  cursor: pointer;
+}
+.ac-item:hover { background: #f6f6f6; }
+.ac-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 4px; }
+.ac-meta { display: flex; flex-direction: column; }
+.ac-title { font-weight: 600; }
+.ac-sub { font-size: 0.9rem; color: #666; }
+
+/* Highlighted (keyboard) selection */
+.ac-selected {
+  background: #fdeccf; /* warm highlight */
+  outline: 2px solid #c59d5f;
+}
+
+/* Spotify user badge shown near the login button */
+.spotify-badge {
+  display: inline-block;
+  background: #1db954;
+  color: white;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  margin-left: 12px;
+}
