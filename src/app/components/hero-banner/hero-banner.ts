@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './hero-banner.html',
-  styleUrl: './hero-banner.css'
+  styleUrls: ['./hero-banner.css']
 })
 export class HeroBanner {
 

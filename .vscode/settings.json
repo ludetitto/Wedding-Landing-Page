@@ -1,0 +1,10 @@
+{
+  // Ask for confirmation before pasting into the integrated terminal to avoid accidental multi-line execution
+  "terminal.integrated.confirmOnPaste": true,
+
+  // Prefer PowerShell on Windows to avoid accidentally invoking WSL
+  "terminal.integrated.defaultProfile.windows": "Windows PowerShell",
+
+  // Don't auto-run tasks on folder open
+  "task.autoDetect": "off"
+}

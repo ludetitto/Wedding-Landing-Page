@@ -1,1 +1,32 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #3a2c1a;
+  background-image: url('/assets/background.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* Focus styles for inputs */
+input:focus, textarea:focus {
+  border: 1px solid #c59d5f;
+  /*background-color: #fffaf6;*
+}
+
+/* Utility */
+.sr-only { position: absolute; left: -10000px; }
+
+/* End of file */
+
+}

@@ -1,0 +1,9 @@
+[build]
+  command = "npm run build"
+  publish = "dist/wedding-landing-page/browser"
+
+# Optional: set basic headers or redirects here if needed
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,7 +1,6 @@
 .gifts-section {
   padding: 5rem 2rem;
   text-align: center;
-  background-color: #fff0f5;
 }
 
 .gifts-title {
@@ -27,7 +26,6 @@
 }
 
 .gift-box {
-  background-color: #ffe6f0;
   border-radius: 15px;
   padding: 2rem;
   width: 180px;
@@ -48,7 +46,6 @@
 }
 
 .gift-button {
-  background-color: #d81b60;
   color: #fff;
   padding: 0.8rem 1.5rem;
   border-radius: 30px;

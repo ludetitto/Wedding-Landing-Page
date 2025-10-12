@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Spotify Callback</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+</head>
+<body>
+  <p>Autenticando con Spotify... aguarda.</p>
+  <script>
+    (async function() {
+      // Reemplaza CLIENT_ID si prefieres inyectarlo en build
+      const CLIENT_ID = 'REPLACE_WITH_CLIENT_ID';
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+      const error = params.get('error');
+
+      if (error) {
+        console.error('Spotify auth error', error);
+        window.location.href = '/?spotify=error';
+        return;
+      }
+      if (!code) {
+        window.location.href = '/?spotify=missing_code';
+        return;
+      }
+
+      const codeVerifier = localStorage.getItem('spotify_code_verifier') || '';
+      if (!codeVerifier) {
+        console.error('Missing code verifier in localStorage');
+        window.location.href = '/?spotify=missing_code_verifier';
+        return;
+      }
+
+      try {
+        const body = new URLSearchParams({
+          grant_type: 'authorization_code',
+          code: code,
+          redirect_uri: window.location.origin + '/spotify-callback.html',
+          client_id: CLIENT_ID,
+          code_verifier: codeVerifier
+        });
+
+        const res = await fetch('https://accounts.spotify.com/api/token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body.toString()
+        });
+
+        const json = await res.json();
+        if (!res.ok) {
+          console.error('Token exchange error', json);
+          window.location.href = '/?spotify=token_error';
+          return;
+        }
+
+        // Guarda token para que la app lo lea
+        localStorage.setItem('spotify_token', JSON.stringify(json));
+        // limpia el code_verifier (opcional)
+        localStorage.removeItem('spotify_code_verifier');
+
+        // Redirigir al home con indicador de éxito
+        window.location.href = '/?spotify=success';
+      } catch (e) {
+        console.error(e);
+        window.location.href = '/?spotify=network_error';
+      }
+    })();
+  </script>
+</body>
+</html>

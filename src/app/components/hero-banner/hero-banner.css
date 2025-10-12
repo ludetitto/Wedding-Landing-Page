@@ -1,9 +1,5 @@
 .hero {
-  background: linear-gradient(
-      rgba(0, 0, 0, 0.5), 
-      rgba(0, 0, 0, 0.5)
-    ),
-    url("/assets/images/couple.jpg") no-repeat center center/cover;
+  background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('/couple.jpg') center/cover no-repeat;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -13,7 +9,7 @@
 }
 
 .hero-title {
-  font-size: 4rem;
+  font-size: clamp(2rem, 6vw, 4rem);
   font-family: "Georgia", serif;
   margin-bottom: 1rem;
 }

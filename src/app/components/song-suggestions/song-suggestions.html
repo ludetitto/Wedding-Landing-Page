@@ -1,0 +1,29 @@
+<div class="song-suggestions">
+  <h2>Sugerencias de canciones</h2>
+  <!-- Spotify playlist embebido -->
+  <div class="spotify-embed" aria-label="Playlist de boda">
+    <!-- Replace PLAYLIST_ID with the actual Spotify playlist id -->
+    <iframe src="https://open.spotify.com/embed/playlist/1wTn5OtC3L7fLqO0203yla?utm_source=generator" width="100%"
+      height="380" frameborder="0" allowtransparency="true" allow="encrypted-media" title="Playlist de la boda">
+    </iframe>
+  </div>
+  <p>Para que la fiesta sea perfecta, ayudanos eligiendo aquellas canciones que creas que no pueden faltar.</p>
+
+  <div class="spotify-controls">
+    <button id="spotify-login" class="btn">Iniciar sesión con Spotify</button>
+    <div class="spotify-search">
+      <input id="spotify-search" type="text" placeholder="Buscar canción o artista">
+      <button id="spotify-search-btn" class="btn">Buscar</button>
+    </div>
+  </div>
+
+  <div id="spotify-results" class="spotify-results"></div>
+
+  <p>O pegá la URL/URI de la pista aquí:</p>
+  <form onsubmit="return false;" id="song-suggest-form">
+    <input id="suggest-name" type="text" placeholder="Nombre">
+    <input id="suggest-input" type="text" placeholder="Sugerir aquí (URL o URI)" required>
+    <button id="suggest-submit" type="button" class="btn">Enviar</button>
+  </form>
+  <p class="feedback" id="suggest-feedback" hidden></p>
+</div>
