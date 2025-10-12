@@ -1,8 +1,10 @@
 // Minimal SpotifyService for PKCE auth, searching tracks and adding tracks to a playlist.
 // Note: you must register your app in Spotify Dashboard and set redirect URI.
 
+import { SPOTIFY_CLIENT_ID } from '../config/spotify-config';
+
 export class SpotifyService {
-  clientId = 'REPLACE_WITH_CLIENT_ID';
+  clientId = SPOTIFY_CLIENT_ID || 'REPLACE_WITH_CLIENT_ID';
   redirectUri = window.location.origin + '/spotify-callback.html'; // ensure this matches the registered redirect URI
   scopes = [
     'playlist-modify-public',
@@ -45,14 +47,24 @@ export class SpotifyService {
     const codeVerifier = this.randomString(64);
     localStorage.setItem('spotify_code_verifier', codeVerifier);
     const codeChallenge = await this.generateCodeChallenge(codeVerifier);
-    const url = new URL('https://accounts.spotify.com/authorize');
-    url.searchParams.set('client_id', this.clientId);
-    url.searchParams.set('response_type', 'code');
-    url.searchParams.set('redirect_uri', this.redirectUri);
-    url.searchParams.set('code_challenge_method', 'S256');
-    url.searchParams.set('code_challenge', codeChallenge);
-    url.searchParams.set('scope', this.scopes);
-    window.location.href = url.toString();
+
+    // fetch client id from serverless function
+    try {
+      const cidRes = await fetch('/.netlify/functions/get-client-id');
+      const cidJson = await cidRes.json();
+      const clientId = cidJson.clientId || this.clientId;
+
+      const url = new URL('https://accounts.spotify.com/authorize');
+      url.searchParams.set('client_id', clientId);
+      url.searchParams.set('response_type', 'code');
+      url.searchParams.set('redirect_uri', this.redirectUri);
+      url.searchParams.set('code_challenge_method', 'S256');
+      url.searchParams.set('code_challenge', codeChallenge);
+      url.searchParams.set('scope', this.scopes);
+      window.location.href = url.toString();
+    } catch (e) {
+      console.error('Unable to fetch client id for Spotify login', e);
+    }
   }
 
   // Exchange code for tokens (call this on redirect page)

@@ -123,6 +123,19 @@ export class SongSuggestionsComponent implements OnInit {
         }
       });
     }
+
+    // Quick paste token for testing
+    const tokenSetBtn = document.getElementById('spotify-token-set');
+    if (tokenSetBtn) {
+      tokenSetBtn.addEventListener('click', async () => {
+        const token = prompt('Pega aquí el access_token de Spotify:');
+        if (token) {
+          const existing = { access_token: token };
+          localStorage.setItem('spotify_token', JSON.stringify(existing));
+          alert('Token guardado en localStorage bajo "spotify_token". Puedes usar búsqueda/Agregar ahora.');
+        }
+      });
+    }
   }
 
   normalizeToTrackUri(input: string): string | null {

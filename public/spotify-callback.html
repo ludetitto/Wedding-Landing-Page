@@ -10,7 +10,8 @@
   <script>
     (async function() {
       // Reemplaza CLIENT_ID si prefieres inyectarlo en build
-      const CLIENT_ID = 'REPLACE_WITH_CLIENT_ID';
+  // client id will be requested from a serverless function to avoid hardcoding
+  let CLIENT_ID = '';
       const params = new URLSearchParams(window.location.search);
       const code = params.get('code');
       const error = params.get('error');
@@ -33,18 +34,19 @@
       }
 
       try {
-        const body = new URLSearchParams({
-          grant_type: 'authorization_code',
-          code: code,
-          redirect_uri: window.location.origin + '/spotify-callback.html',
-          client_id: CLIENT_ID,
-          code_verifier: codeVerifier
-        });
+        // fetch client id from serverless function
+        const cidRes = await fetch('/.netlify/functions/get-client-id');
+        const cidJson = await cidRes.json();
+        CLIENT_ID = cidJson.clientId || '';
 
-        const res = await fetch('https://accounts.spotify.com/api/token', {
+        const res = await fetch('/.netlify/functions/exchange-token', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: body.toString()
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            code,
+            code_verifier: codeVerifier,
+            redirect_uri: window.location.origin + '/spotify-callback.html'
+          })
         });
 
         const json = await res.json();
