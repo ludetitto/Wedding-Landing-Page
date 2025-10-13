@@ -11,7 +11,7 @@
     (async function() {
       // Reemplaza CLIENT_ID si prefieres inyectarlo en build
   // client id will be requested from a serverless function to avoid hardcoding
-  let CLIENT_ID = '';
+  let CLIENT_ID;
       const params = new URLSearchParams(window.location.search);
       const code = params.get('code');
       const error = params.get('error');

@@ -1,5 +1,3 @@
-import fetch from 'node-fetch';
-
 export async function handler(event) {
   try {
     const body = JSON.parse(event.body || '{}');
@@ -18,7 +16,20 @@ export async function handler(event) {
     params.append('client_secret', clientSecret);
     params.append('code_verifier', code_verifier);
 
-    const res = await fetch('https://accounts.spotify.com/api/token', {
+    // ensure we have a fetch implementation (global fetch on Node 18+ or fallback to node-fetch)
+    let fetchImpl = global.fetch;
+    if (!fetchImpl) {
+      try {
+        // lazy-require so that environments with global fetch don't need node-fetch
+        // node-fetch v2 uses require; v3 is ESM-only.
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        fetchImpl = require('node-fetch');
+      } catch (e) {
+        return { statusCode: 500, body: JSON.stringify({ error: 'no_fetch_available' }) };
+      }
+    }
+
+    const res = await fetchImpl('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: params.toString()

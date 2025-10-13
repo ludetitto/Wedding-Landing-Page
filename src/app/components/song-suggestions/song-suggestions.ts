@@ -20,6 +20,16 @@ export class SongSuggestionsComponent implements OnInit {
     const userEl = document.getElementById('spotify-user') as HTMLElement | null;
     const feedbackEl = document.getElementById('suggest-feedback') as HTMLElement | null;
 
+    // Toggle UI helper: query elements each time to avoid temporal-dead-zone issues
+    const setAuthenticatedUI = (authed: boolean) => {
+      const loginBtn = document.getElementById('spotify-login');
+      const searchContainer = document.querySelector('.spotify-search') as HTMLElement | null;
+      const selectedContainer = document.getElementById('spotify-selected') as HTMLElement | null;
+      if (loginBtn) loginBtn.style.display = authed ? 'none' : '';
+      if (searchContainer) searchContainer.style.display = authed ? '' : 'none';
+      if (selectedContainer) selectedContainer.style.display = authed ? '' : 'none';
+    };
+
     const fetchMeAndUpdate = async (token: string | null) => {
       if (!token) {
         if (userEl) {
@@ -118,25 +128,14 @@ export class SongSuggestionsComponent implements OnInit {
       });
     }
 
-    // Login button and toggleable UI
+    // Login button
     const loginBtn = document.getElementById('spotify-login');
-    const searchContainer = document.querySelector('.spotify-search') as HTMLElement | null;
-    const selectedContainer = document.getElementById('spotify-selected') as HTMLElement | null;
-
-    const setAuthenticatedUI = (authed: boolean) => {
-      // when not authenticated show only the login button
-      if (loginBtn) loginBtn.style.display = authed ? 'none' : '';
-      if (searchContainer) searchContainer.style.display = authed ? '' : 'none';
-      if (selectedContainer) selectedContainer.style.display = authed ? '' : 'none';
-    };
-
-    // initialize UI based on current token
-    const initialToken = this.spotify.getAccessToken();
-    setAuthenticatedUI(!!initialToken);
-
     if (loginBtn) {
       loginBtn.addEventListener('click', () => this.spotify.startLogin());
     }
+    // initialize UI based on current token (setAuthenticatedUI queries DOM when called)
+    const initialToken = this.spotify.getAccessToken();
+    setAuthenticatedUI(!!initialToken);
 
     // Search
     const autocompleteInput = document.getElementById('spotify-autocomplete') as HTMLInputElement | null;
