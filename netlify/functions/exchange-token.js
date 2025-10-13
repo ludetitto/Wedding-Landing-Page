@@ -8,6 +8,15 @@ export async function handler(event) {
 
     const clientId = process.env.NETLIFY_SPOTIFY_CLIENT_ID;
     const clientSecret = process.env.NETLIFY_SPOTIFY_CLIENT_SECRET;
+
+    // Fail early with a clear error if the server-side credentials are not set
+    if (!clientId || !clientSecret) {
+      console.error('exchange-token: missing NETLIFY_SPOTIFY_CLIENT_ID or NETLIFY_SPOTIFY_CLIENT_SECRET');
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'server_missing_client_credentials', message: 'Server-side Spotify client_id/secret not configured' })
+      };
+    }
     const params = new URLSearchParams();
     params.append('grant_type', 'authorization_code');
     params.append('code', code);
@@ -28,6 +37,8 @@ export async function handler(event) {
         return { statusCode: 500, body: JSON.stringify({ error: 'no_fetch_available' }) };
       }
     }
+
+    console.log('exchange-token: contacting Spotify token endpoint', { redirect_uri: redirect_uri, hasClientId: !!clientId });
 
     const res = await fetchImpl('https://accounts.spotify.com/api/token', {
       method: 'POST',

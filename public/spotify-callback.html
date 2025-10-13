@@ -52,7 +52,10 @@
         const json = await res.json();
         if (!res.ok) {
           console.error('Token exchange error', json);
-          window.location.href = '/?spotify=token_error';
+          // Show the error JSON on the callback page to aid debugging
+          document.body.innerHTML = '<h3>Token exchange failed</h3><pre>' +
+            JSON.stringify(json, null, 2) + '</pre>' +
+            '<p>Check Netlify function logs and Spotify app settings (client_id, client_secret, redirect URI).</p>';
           return;
         }
 
