@@ -1,14 +1,42 @@
 
+<!-- Video de fondo -->
+<video autoplay muted loop playsinline preload="auto" id="background-video" oncanplay="this.play()">
+  <source src="assets/background.mp4" type="video/mp4">
+  Tu navegador no soporta videos HTML5.
+</video>
 
 <app-hero-banner></app-hero-banner>
 
 <div class="container">
-	<app-event-banner></app-event-banner>
 	<app-event-details></app-event-details>
-	<app-gift-section></app-gift-section>
-	<app-food-restrictions-form></app-food-restrictions-form>
-	<app-song-suggestions></app-song-suggestions>
-	<app-instagram-hashtag></app-instagram-hashtag>
-	<app-rsvp></app-rsvp>
 </div>
+
+<!-- Primera galería de fotos -->
+<app-photo-gallery 
+	[photos]="photosGroup1" 
+	[showTitle]="false">
+</app-photo-gallery>
+
+<div class="container">
+	<app-gift-section></app-gift-section>
+</div>
+
+<!-- Segunda galería de fotos -->
+<app-photo-gallery 
+	[photos]="photosGroup2" 
+	[showTitle]="false">
+</app-photo-gallery>
+
+<div class="container">
+	<app-song-suggestions></app-song-suggestions>
+<!-- 	<app-instagram-hashtag></app-instagram-hashtag>
+ -->	<app-rsvp></app-rsvp>
+</div>
+
+<!-- Tercera galería de fotos -->
+<app-photo-gallery 
+	[photos]="photosGroup3" 
+	[showTitle]="false">
+</app-photo-gallery>
+
 <app-footer-names></app-footer-names>

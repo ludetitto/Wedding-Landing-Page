@@ -1,0 +1,22 @@
+<div class="section-photos" [class]="'layout-' + layout">
+  <div class="photos-container">
+    @for (photo of photos; track photo.id; let i = $index) {
+      <div class="photo-item" [class]="'item-' + (i + 1)" (click)="openModal(photo.src)">
+        <img [src]="photo.src" [alt]="photo.alt" loading="lazy">
+        <div class="photo-overlay">
+          <span class="view-icon">👁️</span>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Modal para ver imágenes en grande -->
+  @if (isModalOpen) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <button class="modal-close" (click)="closeModal()" aria-label="Cerrar">×</button>
+        <img [src]="modalImageSrc" alt="Imagen ampliada">
+      </div>
+    </div>
+  }
+</div>

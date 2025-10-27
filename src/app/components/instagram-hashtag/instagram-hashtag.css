@@ -1,10 +1,12 @@
 .instagram-hashtag {
   background: #fffaf3;
   padding: 2rem;
-  border-radius: 12px;
+  border-radius: 16px;
   margin-bottom: 2rem;
   text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
 .btn {
   background: #c59d5f;
   color: #fff;

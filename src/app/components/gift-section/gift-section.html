@@ -1,5 +1,52 @@
 <div class="gift-section">
-  <h2>Regalos</h2>
-  <p>Para nosotros lo más importante es tu presencia, pero si quisieras hacernos un regalo, te dejamos nuestros datos bancarios.</p>
-  <button class="btn">Ver datos</button>
+  <h2>Lista de Regalos</h2>
+  
+  <div class="gift-intro">
+    <p>Tu presencia en nuestro gran día es el mejor regalo que podrías darnos.</p>
+    <p>Si además querés colaborar con nuestro futuro juntos, podés hacerlo a través de una transferencia bancaria:</p>
+  </div>
+
+  <div class="bank-info-card">
+    <div class="bank-header">
+      <p class="account-holder">{{ bankInfo.accountHolder }}</p>
+      <p class="account-type">{{ bankInfo.accountType }}</p>
+    </div>
+
+    <div class="bank-details">
+      <div class="bank-field">
+        <label>Alias:</label>
+        <div class="copy-field">
+          <span class="field-value alias-value">{{ bankInfo.alias }}</span>
+          <button 
+            class="copy-btn" 
+            (click)="copyToClipboard(bankInfo.alias, 'Alias')"
+            title="Copiar alias">
+            Copiar
+          </button>
+        </div>
+      </div>
+
+      <div class="bank-field">
+        <label>CBU:</label>
+        <div class="copy-field">
+          <span class="field-value">{{ bankInfo.cbu }}</span>
+          <button 
+            class="copy-btn" 
+            (click)="copyToClipboard(bankInfo.cbu, 'CBU')"
+            title="Copiar CBU">
+            Copiar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensaje de éxito al copiar -->
+    <div class="copy-success" *ngIf="copySuccessMessage">
+      ✅ {{ copySuccessMessage }}
+    </div>
+  </div>
+
+  <div class="gift-note">
+    <p>¡Muchas gracias por acompañarnos en este momento tan especial!</p>
+  </div>
 </div>

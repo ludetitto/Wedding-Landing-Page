@@ -1,0 +1,29 @@
+<div class="photo-gallery">
+  @if (showTitle && title) {
+    <h2>{{ title }}</h2>
+  }
+  
+  <!-- Galería en pilón (masonry) -->
+  <div class="masonry-section">
+    <div class="masonry-grid">
+      @for (photo of photos; track photo.id; let i = $index) {
+        <div class="masonry-item" [class]="'item-' + ((i % 4) + 1)">
+          <img [src]="photo.src" [alt]="photo.alt" (click)="openModal(photo.src)" loading="lazy">
+          <div class="photo-overlay">
+            <span class="view-icon">👁️</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Modal para ver imágenes en grande -->
+  @if (isModalOpen) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <button class="modal-close" (click)="closeModal()" aria-label="Cerrar">×</button>
+        <img [src]="modalImageSrc" alt="Imagen ampliada">
+      </div>
+    </div>
+  }
+</div>
