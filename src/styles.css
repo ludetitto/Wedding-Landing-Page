@@ -19,16 +19,43 @@ body {
 
 
 
-/* Video de fondo - Simple y enfocado en móviles */
+/* Video de fondo - Adaptable a móvil y escritorio */
 #background-video {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  object-fit: cover;
+  object-fit: contain;
   z-index: -1;
   opacity: 0.7;
+}
+
+/* Para pantallas mayores a 500px: rotar y centrar el video, llenando la pantalla sin márgenes */
+@media (min-width: 500px) {
+  /* Asegurar que el fondo no muestre un color gris durante la rotación */
+  html, body {
+    background: #000; /* color de respaldo mientras el video llena la pantalla */
+  }
+
+  #background-video {
+    /* Mantener posición fija y centrar el vídeo en el viewport */
+    position: fixed;
+    left: 50%;
+    top: 50%;
+
+    /* Intercambiamos dimensiones para la rotación y forzamos el llenado */
+    width: 100vh; /* anchura igual a la altura del viewport antes de rotar */
+    height: 100vw; /* altura igual al ancho del viewport antes de rotar */
+
+    object-fit: cover; /* cubrir todo el área sin dejar barras */
+
+    /* Centrar y rotar en el mismo paso para evitar offsets */
+    transform-origin: center center;
+    transform: translate(-50%, -50%) rotate(-90deg);
+
+    z-index: -1;
+  }
 }
 
 /* Overlay sutil para legibilidad */
