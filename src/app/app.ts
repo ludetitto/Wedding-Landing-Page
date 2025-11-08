@@ -4,9 +4,9 @@ import { EventDetailsComponent } from './components/event-details/event-details'
 import { PhotoGalleryComponent } from './components/photo-gallery/photo-gallery';
 import { GiftSectionComponent } from './components/gift-section/gift-section';
 import { SongSuggestionsComponent } from './components/song-suggestions/song-suggestions';
-import { InstagramHashtagComponent } from './components/instagram-hashtag/instagram-hashtag';
 import { RsvpComponent } from './components/rsvp/rsvp';
 import { FooterNamesComponent } from './components/footer-names/footer-names';
+import { CountdownComponent } from './components/countdown/countdown';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +18,8 @@ import { FooterNamesComponent } from './components/footer-names/footer-names';
     GiftSectionComponent,
     SongSuggestionsComponent,
     RsvpComponent,
-    FooterNamesComponent
+    FooterNamesComponent,
+    CountdownComponent
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'

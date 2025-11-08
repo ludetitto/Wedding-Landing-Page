@@ -1,0 +1,33 @@
+<div class="floating-countdown" [class.fixed]="isFixed" role="region" aria-label="Cuenta regresiva hasta la boda">
+  <div class="countdown-inner" *ngIf="!finished">
+    <header class="countdown-header">
+      <h3 class="title">Nuestra cuenta regresiva</h3>
+      <p class="subtitle">Faltan <strong>{{ days }}</strong> días para nuestra fiesta</p>
+    </header>
+
+    <div class="countdown-main">
+      <div class="calendar-card" [class.drop]="dayDrop" aria-hidden="false">
+        <div class="card-top">DÍAS</div>
+        <div class="card-number">{{ days }}</div>
+      </div>
+
+      <div class="time-row">
+        <div class="time-box" [class.flip]="flipHours">
+          <div class="time-number">{{ pad(hours) }}</div>
+          <div class="time-label">Horas</div>
+        </div>
+        <div class="time-box" [class.flip]="flipMins">
+          <div class="time-number">{{ pad(mins) }}</div>
+          <div class="time-label">Minutos</div>
+        </div>
+        <div class="time-box" [class.flip]="flipSecs">
+          <div class="time-number">{{ pad(secs) }}</div>
+          <div class="time-label">Segundos</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="countdown-inner finished" *ngIf="finished">¡Hoy es la fiesta!</div>
+</div>

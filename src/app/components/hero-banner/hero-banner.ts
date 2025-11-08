@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { CountdownComponent } from '../countdown/countdown';
 
 @Component({
   selector: 'app-hero-banner',
   standalone: true,
-  imports: [],
+  imports: [CountdownComponent],
   templateUrl: './hero-banner.html',
   styleUrls: ['./hero-banner.css']
 })

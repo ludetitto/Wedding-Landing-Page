@@ -11,9 +11,9 @@ import { CommonModule } from '@angular/common';
 export class GiftSectionComponent {
   // Información de la cuenta bancaria o alias
   bankInfo = {
-    alias: 'casamiento.flor.leo',
+    alias: 'GUSTO.SALSA.CUENTO',
     accountHolder: 'Florencia De Titto',
-    cbu: '2850590940094265473710',
+    cbu: '0150536801000119630124',
     accountType: 'Cuenta Corriente'
   };
 

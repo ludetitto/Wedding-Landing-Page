@@ -10,11 +10,7 @@
      [class.previous]="i === previousIndex"
      [class.next-transition]="transitionDirection === 'next'"
      [class.prev-transition]="transitionDirection === 'prev'"
-     [class.vertical]="isVertical(photo)"
      loading="lazy">
     </div>
-
-    <button class="control prev" aria-label="Previous slide" (click)="prev()">‹</button>
-    <button class="control next" aria-label="Next slide" (click)="next()">›</button>
   </div>
 </div>

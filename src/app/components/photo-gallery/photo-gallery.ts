@@ -28,20 +28,6 @@ export class PhotoGalleryComponent {
   private intervalId: any;
   transitionDirection: 'next' | 'prev' | null = null;
 
-  // Nombres de archivos que deben mostrarse en formato vertical
-  private verticalFilenames = [
-    'IMG-20251026-WA0003.jpg',
-    'IMG-20251026-WA0004.jpg',
-    'IMG-20251026-WA0005.jpg'
-  ];
-
-  isVertical(photo: PhotoItem): boolean {
-    if (!photo || !photo.src) return false;
-    // comprobar si la ruta contiene alguno de los nombres listados
-    const src = photo.src.toString();
-    return this.verticalFilenames.some(name => src.endsWith(name) || src.indexOf(name) !== -1);
-  }
-
   ngOnInit() {
     this.startAutoplay();
   }

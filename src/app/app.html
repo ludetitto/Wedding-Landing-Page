@@ -7,6 +7,8 @@
 
 <app-hero-banner></app-hero-banner>
 
+<!-- Countdown moved into the hero so it appears under the subtitle -->
+
 <div class="container">
 	<app-event-details></app-event-details>
 </div>
@@ -29,14 +31,15 @@
 
 <div class="container">
 	<app-song-suggestions></app-song-suggestions>
-<!-- 	<app-instagram-hashtag></app-instagram-hashtag>
- -->	<app-rsvp></app-rsvp>
 </div>
-
-<!-- Tercera galería de fotos -->
+	<!-- Tercera galería de fotos -->
 <app-photo-gallery 
 	[photos]="photosGroup3" 
 	[showTitle]="false">
 </app-photo-gallery>
+
+<div class="container">
+	<app-rsvp></app-rsvp>
+</div>
 
 <app-footer-names></app-footer-names>
