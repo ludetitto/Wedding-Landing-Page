@@ -49,3 +49,9 @@
   font-weight: bold;
   color: #c59d5f;
 }
+
+h2 {
+  color: #8b4513;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  margin-bottom: 0.5rem;
+}
