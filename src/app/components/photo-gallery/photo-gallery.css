@@ -15,40 +15,107 @@
   position: relative;
   max-width: 1200px;
   margin: 0 auto;
-  height: 60vh;
-  border-radius: 12px;
-  overflow: hidden;
-  background: transparent; /* quitar fondo blanco */
+  height: 70vh;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
 }
 
 .slides {
   position: relative;
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .slides img {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  height: 100%;
-  width: 100%;
-  object-fit: cover; /* llenar el área sin fondo blanco */
+  width: 80%;
+  height: 85%;
   opacity: 0;
-  transition: opacity 600ms ease;
+  background-color: white;
+  padding: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  object-fit: cover;
+  transition: all 600ms cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center center;
+  transform: scale(0.8) rotate(0deg);
+  pointer-events: none;
+}
+
+.slides img.previous {
+  opacity: 0.3;
+  z-index: 0;
+  transform: scale(0.95) rotate(var(--rotation, 0deg)) translateX(-5%);
 }
 
 .slides img.active {
   opacity: 1;
   z-index: 1;
+  transform: scale(1) rotate(var(--rotation, 0deg));
 }
 
-/* Estilo específico para imágenes verticales: mantener altura completa y ancho automático */
+.slides img:nth-child(5n+1) { --rotation: -2deg; }
+.slides img:nth-child(5n+2) { --rotation: 1.5deg; }
+.slides img:nth-child(5n+3) { --rotation: -1deg; }
+.slides img:nth-child(5n+4) { --rotation: 2.5deg; }
+.slides img:nth-child(5n+5) { --rotation: -1.5deg; }
+
+.slides img.active.next-transition {
+  animation: rotateNext 600ms forwards;
+}
+
+.slides img.previous.next-transition {
+  animation: fadeBack 600ms forwards;
+}
+
+.slides img.active.prev-transition {
+  animation: rotatePrev 600ms forwards;
+}
+
+.slides img.previous.prev-transition {
+  animation: fadeBack 600ms forwards;
+}
+
+@keyframes rotateNext {
+  0% { transform: scale(0.9) rotate(calc(var(--rotation) - 5deg)); }
+  100% { transform: scale(1) rotate(var(--rotation)); }
+}
+
+@keyframes rotatePrev {
+  0% { transform: scale(0.9) rotate(calc(var(--rotation) + 5deg)); }
+  100% { transform: scale(1) rotate(var(--rotation)); }
+}
+
+@keyframes fadeBack {
+  0% { 
+    opacity: 1;
+    transform: scale(1) rotate(var(--rotation));
+  }
+  100% { 
+    opacity: 0.3;
+    transform: scale(0.95) rotate(var(--rotation)) translateX(-5%);
+  }
+}
+
+/* Estilo específico para imágenes verticales */
 .slides img.vertical {
   width: auto;
-  height: 100%;
-  object-fit: contain; /* mostrar completas en altura sin recortar */
+  max-width: 50%;
+  height: 85%;
+  object-fit: contain;
+}
+
+.slides img.vertical.active {
+  width: auto;
+  max-width: 50%;
+}
+
+.slides img.vertical.previous {
+  width: auto;
+  max-width: 45%;
 }
 
 .control {
@@ -73,66 +140,7 @@
 
 /* indicators removed */
 
-/* === MODAL === */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: fadeIn 0.3s ease;
-}
 
-.modal-content {
-  position: relative;
-  max-width: 90vw;
-  max-height: 90vh;
-  background: white;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-}
-
-.modal-content img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
-
-.modal-close {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 40px;
-  height: 40px;
-  border: none;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border-radius: 50%;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 1001;
-}
-
-
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
 
 /* === RESPONSIVE DESIGN === */
 @media (min-width: 768px) {

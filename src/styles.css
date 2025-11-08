@@ -1,6 +1,5 @@
 /* Global styles */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
 html, body {
   height: 100%;
@@ -20,46 +19,16 @@ body {
 
 
 
-/* Video de fondo - Adaptable a móvil y escritorio */
+/* Video de fondo - Simple y enfocado en móviles */
 #background-video {
-  /* Centrado por defecto para formato vertical: altura = 100vh, ancho automático */
   position: fixed;
-  left: 50%;
-  top: 50%;
-  width: auto;
-  height: 100vh; /* Ajustar la altura al viewport en vertical */
-  object-fit: contain; /* Mantener aspecto, no recortar */
-  transform: translate(-50%, -50%) rotate(0deg);
-  transform-origin: center center;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
   z-index: -1;
   opacity: 0.7;
-}
-
-/* Para pantallas mayores a 500px: rotar y centrar el video, llenando la pantalla sin márgenes */
-@media (min-width: 500px) {
-  /* Asegurar que el fondo no muestre un color gris durante la rotación */
-  html, body {
-    background: #000; /* color de respaldo mientras el video llena la pantalla */
-  }
-
-  #background-video {
-    /* Mantener posición fija y centrar el vídeo en el viewport */
-    position: fixed;
-    left: 50%;
-    top: 50%;
-
-    /* Intercambiamos dimensiones para la rotación y forzamos el llenado */
-    width: 100vh; /* anchura igual a la altura del viewport antes de rotar */
-    height: 100vw; /* altura igual al ancho del viewport antes de rotar */
-
-    object-fit: cover; /* cubrir todo el área sin dejar barras */
-
-    /* Centrar y rotar en el mismo paso para evitar offsets */
-    transform-origin: center center;
-    transform: translate(-50%, -50%) rotate(-90deg);
-
-    z-index: -1;
-  }
 }
 
 /* Overlay sutil para legibilidad */
@@ -74,10 +43,9 @@ body::before {
   z-index: -1;
 }
 
-/* Tipografía de títulos: Bodoni Moda */
+/* Tipografía unificada */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Bodoni Moda', 'Times New Roman', serif;
-  font-weight: 600;
+  font-family: 'Inter', sans-serif;
 }
 
 p, span, div, label, button, input, textarea {
@@ -110,23 +78,15 @@ input, textarea, select {
   box-sizing: border-box;
 }
 
-@media (min-width: 500px) {
-  #background-video {
-    /* Para pantallas más grandes: rotar 90 grados y ajustar al viewport */
-    left: 50%;
-    top: 50%;
-
-    /* Intercambiamos dimensiones antes de rotar para cubrir el viewport */
-    width: 100vh; /* anchura igual a la altura del viewport (antes de rotar) */
-    height: 100vw; /* altura igual al ancho del viewport (antes de rotar) */
-
-    object-fit: cover; /* cubrir todo el área */
-
-    transform-origin: center center;
-    transform: translate(-50%, -50%) rotate(-90deg);
-    z-index: -1;
+@media (min-width: 768px) {
+  input, textarea, select {
+    max-width: 400px;
   }
 }
+
+/* Utility Classes */
+.sr-only { position: absolute; left: -10000px; }
+
 /* Responsive utilities */
 .text-center { text-align: center; }
 .text-left { text-align: left; }

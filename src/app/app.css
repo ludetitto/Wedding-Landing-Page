@@ -19,10 +19,10 @@
 }
 
 h1, h2, h3, h4 {
-	font-family: 'Bodoni Moda', 'Times New Roman', serif; /* títulos en Bodoni Moda */
+	font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
 	color: #bfa77a;
 	margin-top: 0;
-	font-weight: 600;
+	font-weight: 500;
 	letter-spacing: 0.02em;
 }
 

@@ -24,10 +24,13 @@ export class PhotoGalleryComponent {
 
   /* Carousel state */
   current = 0;
+  previousIndex = -1;
   private intervalId: any;
+  transitionDirection: 'next' | 'prev' | null = null;
 
   // Nombres de archivos que deben mostrarse en formato vertical
   private verticalFilenames = [
+    'IMG-20251026-WA0003.jpg',
     'IMG-20251026-WA0004.jpg',
     'IMG-20251026-WA0005.jpg'
   ];
@@ -75,12 +78,24 @@ export class PhotoGalleryComponent {
 
   next() {
     if (!this.photos || this.photos.length === 0) return;
+    this.transitionDirection = 'next';
+    this.previousIndex = this.current;
     this.current = (this.current + 1) % this.photos.length;
+    setTimeout(() => {
+      this.transitionDirection = null;
+      this.previousIndex = -1;
+    }, 600); // Reset after transition
   }
 
   prev() {
     if (!this.photos || this.photos.length === 0) return;
+    this.transitionDirection = 'prev';
+    this.previousIndex = this.current;
     this.current = (this.current - 1 + this.photos.length) % this.photos.length;
+    setTimeout(() => {
+      this.transitionDirection = null;
+      this.previousIndex = -1;
+    }, 600); // Reset after transition
   }
 
   goTo(i: number) {
