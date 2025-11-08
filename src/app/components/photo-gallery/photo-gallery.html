@@ -1,29 +1,28 @@
 <div class="photo-gallery">
-  @if (showTitle && title) {
-    <h2>{{ title }}</h2>
-  }
-  
-  <!-- Galería en pilón (masonry) -->
-  <div class="masonry-section">
-    <div class="masonry-grid">
-      @for (photo of photos; track photo.id; let i = $index) {
-        <div class="masonry-item" [class]="'item-' + ((i % 4) + 1)">
-          <img [src]="photo.src" [alt]="photo.alt" (click)="openModal(photo.src)" loading="lazy">
-          <div class="photo-overlay">
-            <span class="view-icon">👁️</span>
-          </div>
-        </div>
-      }
+  <h2 *ngIf="showTitle && title">{{ title }}</h2>
+
+  <div class="carousel" (mouseenter)="pause()" (mouseleave)="resume()">
+    <div class="slides">
+   <img *ngFor="let photo of photos; let i = index"
+     [src]="photo.src"
+     [alt]="photo.alt"
+     [class.active]="i === current"
+     [class.vertical]="isVertical(photo)"
+     (click)="openModal(photo.src)"
+     loading="lazy">
     </div>
+
+    <button class="control prev" aria-label="Previous slide" (click)="prev()">‹</button>
+    <button class="control next" aria-label="Next slide" (click)="next()">›</button>
+
+    <!-- indicators removed per request -->
   </div>
 
   <!-- Modal para ver imágenes en grande -->
-  @if (isModalOpen) {
-    <div class="modal-overlay" (click)="closeModal()">
-      <div class="modal-content" (click)="$event.stopPropagation()">
-        <button class="modal-close" (click)="closeModal()" aria-label="Cerrar">×</button>
-        <img [src]="modalImageSrc" alt="Imagen ampliada">
-      </div>
+  <div *ngIf="isModalOpen" class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="closeModal()" aria-label="Cerrar">×</button>
+      <img [src]="modalImageSrc" alt="Imagen ampliada">
     </div>
-  }
+  </div>
 </div>
