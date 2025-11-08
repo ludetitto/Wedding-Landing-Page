@@ -21,12 +21,15 @@ body {
 
 /* Video de fondo - Simple y enfocado en móviles */
 #background-video {
+  /* Centrado por defecto para formato vertical: altura = 100vh, ancho automático */
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
+  left: 50%;
+  top: 50%;
+  width: auto;
+  height: 100vh; /* Ajustar la altura al viewport en vertical */
+  object-fit: contain; /* Mantener aspecto, no recortar */
+  transform: translate(-50%, -50%) rotate(0deg);
+  transform-origin: center center;
   z-index: -1;
   opacity: 0.7;
 }
@@ -78,14 +81,24 @@ input, textarea, select {
   box-sizing: border-box;
 }
 
-@media (min-width: 768px) {
-  input, textarea, select {
-    max-width: 400px;
+@media (min-width: 500px) {
+  #background-video {
+    /* Para pantallas más grandes: rotar 90 grados y ajustar al viewport */
+    left: 50%;
+    top: 50%;
+
+    /* Intercambiamos dimensiones antes de rotar para cubrir el viewport */
+    width: 100vh; /* anchura igual a la altura del viewport (antes de rotar) */
+    height: 100vw; /* altura igual al ancho del viewport (antes de rotar) */
+
+    object-fit: cover; /* cubrir todo el área */
+
+
+    transform-origin: center center;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    z-index: -1;
   }
 }
-
-/* Utility Classes */
-.sr-only { position: absolute; left: -10000px; }
 
 /* Responsive utilities */
 .text-center { text-align: center; }
