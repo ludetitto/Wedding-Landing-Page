@@ -43,16 +43,30 @@
 
   .countdown-card .card-body { display:flex; gap:14px; align-items:center; justify-content:center; }
   .days-tile { background: #fff; width:110px; border-radius:10px; text-align:center; padding:10px; box-shadow: 0 8px 18px rgba(0,0,0,0.08); }
+  .days-tile { box-sizing: border-box; border: 1px solid rgba(0,0,0,0.06); }
   .days-tile .label { font-size:0.7rem; color:#6b5a63; letter-spacing:1px; }
   .days-tile .value { font-size:2rem; font-weight:900; color:#111; margin-top:6px; }
 
   .time-tiles { display:flex; gap:8px; align-items:center; }
   .time-tile { background:#fff; width:64px; border-radius:8px; text-align:center; padding:8px 6px; box-shadow: 0 6px 14px rgba(0,0,0,0.07); }
+  .time-tile { box-sizing: border-box; border: 1px solid rgba(0,0,0,0.06); }
   .time-tile .value { font-size:1.05rem; font-weight:800; color:#111; }
   .time-tile .label { font-size:0.68rem; color:#6b5a63; margin-top:6px; }
 
   .finished { font-weight:700; padding: 6px 10px; text-align:center; }
 .floating-countdown .time-box:hover { transform: translateY(-3px); transition: transform 160ms ease; }
+
+/* footer text moved under the tiles */
+.countdown-card .card-foot {
+  text-align: center;
+  color: #7a5a6a;
+  margin-top: 10px;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 600px) {
+  .countdown-card .card-foot { margin-top: 8px; font-size: 0.78rem; }
+}
 
   /* Mobile adjustments: make the card and tiles smaller on narrow screens */
   @media (max-width: 600px) {
