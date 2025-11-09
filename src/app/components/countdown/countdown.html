@@ -1,33 +1,33 @@
-<div class="floating-countdown" [class.fixed]="isFixed" role="region" aria-label="Cuenta regresiva hasta la boda">
-  <div class="countdown-inner" *ngIf="!finished">
-    <header class="countdown-header">
-      <h3 class="title">Nuestra cuenta regresiva</h3>
-      <p class="subtitle">Faltan <strong>{{ days }}</strong> días para nuestra fiesta</p>
-    </header>
-
-    <div class="countdown-main">
-      <div class="calendar-card" [class.drop]="dayDrop" aria-hidden="false">
-        <div class="card-top">DÍAS</div>
-        <div class="card-number">{{ days }}</div>
+  <ng-container *ngIf="!finished">
+    <div class="countdown-card" role="region" aria-live="polite" aria-label="Cuenta regresiva hasta la boda">
+      <div class="card-header" aria-hidden="true">
+        <strong>Faltan</strong>
+        <div class="card-sub">para nuestra boda</div>
       </div>
 
-      <div class="time-row">
-        <div class="time-box" [class.flip]="flipHours">
-          <div class="time-number">{{ pad(hours) }}</div>
-          <div class="time-label">Horas</div>
+      <div class="card-body">
+        <div class="days-tile">
+          <div class="label">DÍAS</div>
+          <div class="value">{{ days }}</div>
         </div>
-        <div class="time-box" [class.flip]="flipMins">
-          <div class="time-number">{{ pad(mins) }}</div>
-          <div class="time-label">Minutos</div>
-        </div>
-        <div class="time-box" [class.flip]="flipSecs">
-          <div class="time-number">{{ pad(secs) }}</div>
-          <div class="time-label">Segundos</div>
+
+        <div class="time-tiles">
+          <div class="time-tile">
+            <div class="value">{{ pad(hours) }}</div>
+            <div class="label">HORAS</div>
+          </div>
+          <div class="time-tile">
+            <div class="value">{{ pad(mins) }}</div>
+            <div class="label">MIN</div>
+          </div>
+          <div class="time-tile">
+            <div class="value">{{ pad(secs) }}</div>
+            <div class="label">SEG</div>
+          </div>
         </div>
       </div>
     </div>
 
-  </div>
+  </ng-container>
 
-  <div class="countdown-inner finished" *ngIf="finished">¡Hoy es la fiesta!</div>
-</div>
+  <div class="countdown-inner finished" *ngIf="finished" role="region" aria-live="polite">¡Hoy es la fiesta!</div>

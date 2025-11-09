@@ -6,7 +6,6 @@ import { GiftSectionComponent } from './components/gift-section/gift-section';
 import { SongSuggestionsComponent } from './components/song-suggestions/song-suggestions';
 import { RsvpComponent } from './components/rsvp/rsvp';
 import { FooterNamesComponent } from './components/footer-names/footer-names';
-import { CountdownComponent } from './components/countdown/countdown';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +17,7 @@ import { CountdownComponent } from './components/countdown/countdown';
     GiftSectionComponent,
     SongSuggestionsComponent,
     RsvpComponent,
-    FooterNamesComponent,
-    CountdownComponent
+    FooterNamesComponent
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'
