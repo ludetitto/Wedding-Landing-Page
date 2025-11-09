@@ -13,8 +13,7 @@ export class GiftSectionComponent {
   bankInfo = {
     alias: 'GUSTO.SALSA.CUENTO',
     accountHolder: 'Florencia De Titto',
-    cbu: '0150536801000119630124',
-    accountType: 'Cuenta Corriente'
+    cbu: '0150536801000119630124'
   };
 
   // Estado para mostrar mensaje de copiado

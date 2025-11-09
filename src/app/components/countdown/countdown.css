@@ -5,150 +5,82 @@
   /* solid background (no transparency) */
   --count-bg: #fff6f8; /* light pink */
   --count-accent: #e83b6f; /* deep rose for tiles */
-  --count-accent-darker: #d02b5f;
-  --count-accent-soft: #ffd7e6;
-  --count-text: #ffffff;
-  --count-shadow: rgba(0,0,0,0.14);
 }
 
+/* Simple countdown styles (revert to original inline style) */
 .floating-countdown {
   display: block;
-  position: static; /* render in-flow under the hero subtitle */
+  position: static;
   margin-top: 12px;
-  z-index: 9999;
   width: 100%;
-  max-width: 360px;
-  transition: transform 180ms ease, opacity 160ms ease;
-  pointer-events: auto;
+  max-width: 420px;
 }
 
-/* When the component is moved to body we add the .overlay class; make it a fixed overlay */
-.floating-countdown.overlay {
-  position: fixed !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important; /* center horizontally */
-  bottom: 18px !important; /* keep near bottom */
-  top: auto !important;
-  right: auto !important;
-  z-index: 1200000 !important;
-  width: auto !important;
-  max-width: 480px !important;
-  margin: 0 !important;
-}
+  .countdown-inner {
+    background-color: #fffaf3;
+    border: 1px solid rgba(0,0,0,0.06);
+    padding: 12px 14px;
+    border-radius: 10px;
+    color: #3a2c1a;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  }
 
-.floating-countdown.overlay .countdown-inner {
-  background-color: #ffffff !important; /* solid white for max contrast */
-  color: #2b2a28 !important;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.28) !important;
-  border: 1px solid rgba(0,0,0,0.06) !important;
-}
+  .countdown-header { text-align: center; }
+  .countdown-header .title { margin: 0; font-size: 1rem; font-weight:700; }
+  .countdown-header .subtitle { margin: 4px 0 8px; font-size: 0.95rem; color: #7a5a6a; }
 
-/* DEBUG: clase temporal para ayudar a localizar el elemento en pantalla.
-   Esto añade un borde y un fondo muy contrastado; lo quitaremos cuando confirmes. */
-.floating-countdown.debug-force {
-  outline: 3px solid magenta !important;
-  right: 12px !important;
-  bottom: 12px !important;
-  left: auto !important;
-  top: auto !important;
-}
-.floating-countdown.debug-force .countdown-inner {
-  background-color: rgba(255,255,0,0.95) !important;
-  color: #2b2a28 !important;
-}
+  .countdown-card {
+    background: #fff; /* white interior card */
+    padding: 14px;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+    max-width: 420px;
+    margin: 0 auto;
+  }
+  .countdown-card .card-header { text-align: center; margin-bottom: 10px; }
+  .countdown-card .card-header strong { display:block; font-size:1rem; color:#2b2a28; }
+  .countdown-card .card-header .card-sub { font-size:0.85rem; color:#7a5a6a; margin-top:6px; }
 
-.countdown-inner {
-  /* Use a solid background color and ensure no transparency or background images
-     so the inner box always appears opaque regardless of parent styles. */
-  background-color: var(--count-bg) !important;
-  background-image: none !important;
-  opacity: 1 !important;
-  mix-blend-mode: normal !important;
-  color: #3a2c1a !important; /* ensure readable text color over the light bg */
-  /* Make sure the inner box is above nearby elements and has a visible border */
-  position: relative !important;
-  z-index: 99999 !important;
-  border: 1px solid rgba(208,43,95,0.08) !important;
-  padding: 10px; /* tamaño reducido */
-  border-radius: 10px;
-  box-shadow: 0 10px 22px var(--count-shadow);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: stretch;
-}
+  .countdown-card .card-body { display:flex; gap:14px; align-items:center; justify-content:center; }
+  .days-tile { background: #fff; width:110px; border-radius:10px; text-align:center; padding:10px; box-shadow: 0 8px 18px rgba(0,0,0,0.08); }
+  .days-tile .label { font-size:0.7rem; color:#6b5a63; letter-spacing:1px; }
+  .days-tile .value { font-size:2rem; font-weight:900; color:#111; margin-top:6px; }
 
-.countdown-header { text-align: center; }
-.countdown-header .title { margin: 0; font-size: 1rem; color: var(--count-accent-darker); font-weight:800; }
-.countdown-header .subtitle { margin: 2px 0 0 0; font-size: 0.85rem; color: #7a5a6a; }
+  .time-tiles { display:flex; gap:8px; align-items:center; }
+  .time-tile { background:#fff; width:64px; border-radius:8px; text-align:center; padding:8px 6px; box-shadow: 0 6px 14px rgba(0,0,0,0.07); }
+  .time-tile .value { font-size:1.05rem; font-weight:800; color:#111; }
+  .time-tile .label { font-size:0.68rem; color:#6b5a63; margin-top:6px; }
 
-.countdown-main { display:flex; gap:12px; align-items: center; justify-content: center; }
-
-
-.calendar-card {
-  width: 100px; /* reducido */
-  min-width: 82px;
-  background-color: var(--count-accent) !important;
-  background-image: none !important;
-  background: linear-gradient(180deg, var(--count-accent), var(--count-accent-darker));
-  color: var(--count-text);
-  border-radius: 8px;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.16);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding: 6px 8px;
-  transform-origin: center top;
-}
-.calendar-card .card-top { font-size:0.68rem; letter-spacing:1px; }
-.calendar-card .card-number { font-size:2rem; font-weight:900; line-height:1; margin-top:4px; }
-
-.time-row { display:flex; gap:8px; align-items:flex-end; }
-.time-box {
-  width:54px; /* reducido */
-  height:54px;
-  background-color: var(--count-accent) !important;
-  background-image: none !important;
-  background: var(--count-accent);
-  border-radius: 8px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  color: var(--count-text);
-  font-weight:800;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.14);
-  transform-origin: center top;
-}
-.time-number { font-size:1.2rem; line-height:1; }
-.time-label { font-size:0.62rem; margin-top:3px;}
-
-.finished { font-weight:700; padding: 6px 10px; text-align:center; }
-
-/* Responsive adjustments */
-@media (max-width: 420px) {
-  .floating-countdown { right: 10px; bottom: 10px; max-width: 280px; }
-  .calendar-card { width: 86px; }
-  .time-box { width:46px; height:46px; }
-  .countdown-header .title { font-size:0.92rem }
-}
-
-/* Animations: drop for days, flip for small boxes */
-@keyframes dropIn {
-  0% { transform: translateY(-80px) rotate(-6deg) scale(0.96); opacity:0 }
-  60% { transform: translateY(10px) rotate(4deg) scale(1.02); opacity:1 }
-  100% { transform: translateY(0) rotate(0) scale(1); opacity:1 }
-}
-.calendar-card.drop { animation: dropIn 700ms cubic-bezier(.2,.9,.2,1); }
-
-@keyframes flipIn {
-  0% { transform: rotateX(-90deg); opacity:0 }
-  60% { transform: rotateX(12deg); opacity:1 }
-  100% { transform: rotateX(0); opacity:1 }
-}
-.time-box.flip { animation: flipIn 320ms cubic-bezier(.2,.9,.2,1); }
-
-/* small subtle hover/press effect to feel tactile */
-.floating-countdown .calendar-card:hover,
+  .finished { font-weight:700; padding: 6px 10px; text-align:center; }
 .floating-countdown .time-box:hover { transform: translateY(-3px); transition: transform 160ms ease; }
+
+  /* Mobile adjustments: make the card and tiles smaller on narrow screens */
+  @media (max-width: 600px) {
+    .countdown-card {
+      padding: 10px;
+      max-width: 320px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+    .countdown-card .card-header strong { font-size: 0.95rem; }
+    .countdown-card .card-header .card-sub { font-size: 0.78rem; }
+
+    .countdown-card .card-body { gap: 8px; }
+    .days-tile { width: 86px; padding: 8px; }
+    .days-tile .value { font-size: 1.6rem; }
+
+    .time-tiles { gap: 6px; }
+    .time-tile { width: 52px; padding: 6px 4px; }
+    .time-tile .value { font-size: 0.95rem; }
+
+    .countdown-header .title { font-size: 0.95rem; }
+    .countdown-header .subtitle { font-size: 0.8rem; }
+  }
+
+  /* Very small devices (optional extra squeeze) */
+  @media (max-width: 360px) {
+    .countdown-card { max-width: 280px; padding: 8px; }
+    .days-tile { width: 76px; }
+    .days-tile .value { font-size: 1.45rem; }
+    .time-tile { width: 46px; padding: 5px 3px; }
+    .time-tile .value { font-size: 0.88rem; }
+  }
