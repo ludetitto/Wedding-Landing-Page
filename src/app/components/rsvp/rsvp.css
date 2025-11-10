@@ -1,10 +1,14 @@
 .rsvp {
   background: #fffaf3;
-  padding: 1rem;
+  padding: 1rem 1rem 2rem;
   border-radius: 12px;
-  margin-bottom: 1rem;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 0;
+}
+
+.rsvp.container {
+  margin: 0;
 }
 
 @media (min-width: 768px) {
@@ -49,10 +53,33 @@
   max-width: 100%;
   margin: 0 auto;
   position: relative;
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 1rem 0 0 0;
+}
+
+.rsvp-button {
+  display: inline-block;
+  background: #c59d5f;
+  color: #fff;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(197, 157, 95, 0.3);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.rsvp-button:hover {
+  background: #b8935a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(197, 157, 95, 0.4);
+}
+
+.rsvp-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 15px rgba(197, 157, 95, 0.3);
 }
 
 @media (min-width: 768px) {

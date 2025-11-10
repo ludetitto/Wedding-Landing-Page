@@ -5,7 +5,12 @@
 	padding: 2.2rem 1.5rem;
 	box-shadow: 0 2px 16px rgba(197, 157, 95, 0.07);
 	/* background-color: rgba(255, 250, 243, 0.92); subtle translucent card */
-	min-height: 80vh;
+	height: auto;
+	min-height: fit-content;
+}
+
+.container.no-margin-bottom {
+	margin-bottom: 0;
 	
 	/* Apple-style scroll reveal */
 	opacity: 0;
