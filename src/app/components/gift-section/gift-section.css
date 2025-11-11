@@ -26,6 +26,9 @@
 .bank-info-card {
   background: #fff;
   border: 2px solid #e8dcc0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
 }
 
 .bank-header {
@@ -62,6 +65,7 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  text-align: center;
 }
 
 .bank-field label {
@@ -80,6 +84,7 @@
   border-radius: 6px;
   padding: 0.5rem;
   gap: 0.5rem;
+  flex-direction: column;
 }
 
 .field-value {
@@ -112,6 +117,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
 .copy-btn:hover {
@@ -163,11 +169,13 @@
 @media (max-width: 768px) {
   .gift-section {
     padding: 1.5rem;
+    border-radius: 16px;
   }
   
   .bank-info-card {
     margin: 1rem 0;
-    padding: 1rem;
+    padding: 1.5rem;
+    border-radius: 8px;
   }
   
   .copy-field {
@@ -183,6 +191,7 @@
   
   .field-value {
     text-align: center;
-    padding: 0.25rem;
+    padding: 0.5rem;
+    flex: 1;
   }
 }
